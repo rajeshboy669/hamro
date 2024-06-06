@@ -40,10 +40,14 @@ def link_gen(uname, long_link):
         api_key=res['api_key']
         url=f"https://xtshort.com/api?api={api_key}&url={long_link}&format=text"
         headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Accept": "application/json",
-    
-}
+  "User-Agent": "Mozilla/5.0+(compatible; UptimeRobot/2.0; http://www.uptimerobot.com/)",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.8",
+  "Connection": "close",
+  "cache-control": "no-cache",
+  "Referer": "https://hamro.onrender.com",
+  "Accept-encoding": ""
+        }
 
         response = requests.get(url, headers=headers)
         return response.text
