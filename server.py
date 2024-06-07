@@ -1,4 +1,6 @@
 import telegram.ext
+from keep_alive import keep_alive
+keepalive()
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import re
 import string
