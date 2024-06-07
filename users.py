@@ -1,7 +1,6 @@
 from pymongo.mongo_client import MongoClient
 import requests
-from keep_alive import keep_alive
-keepalive()
+
 uri = "mongodb+srv://realaaroha:realaaroha@cluster0.6jc4x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Create a new client and connect to the server
