@@ -1,5 +1,7 @@
 import telegram.ext
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from keep_alive import keep_alive
+keepalive()
 import re
 import string
 import random
