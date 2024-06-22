@@ -1,6 +1,8 @@
 import telegram.ext
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import re
+from pymongo.mongo_client import MongoClient
+import requests
 import string
 import random
 from users import *
@@ -8,6 +10,62 @@ def end_gen(length):
     letters = string.ascii_lowercase+string.digits+string.digits
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
+
+
+
+uri = "mongodb+srv://realaaroha:realaaroha@cluster0.6jc4x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+# Create a new client and connect to the server
+client = MongoClient(uri)
+db = client['TeleUsers']
+collection = db['TeleAuth']
+# user login
+
+def is_auth(uname):
+    query = {"_id": uname}
+    result = collection.find_one(query)
+    return result
+
+def login(uname, api_key):
+    d_check=is_auth(uname)
+    if d_check == None:
+        document = {'_id': uname,'api_key': api_key}
+        collection.insert_one(document)
+        return True
+    else:
+        return False
+    
+def logout(uname):
+    query={'_id': uname}
+    result = collection.find_one(query)
+    if result != None:
+        collection.delete_one(query)
+        return True
+    else:
+        return False
+
+# link generator 
+def link_gen(uname, long_link):
+    if is_auth(uname) != None:
+        query={"_id":uname}
+        res=collection.find_one(query)
+        api_key=res['api_key']
+        url=f"https://ez4short.xyz/api?api={api_key}&url={long_link}&format=text"
+        headers = {
+  "User-Agent": "Mozilla/5.0+(compatible; UptimeRobot/2.0; http://www.uptimerobot.com/)",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.8",
+  "Connection": "close",
+  "cache-control": "no-cache",
+  "Referer": "https://hamro.onrender.com",
+  "Accept-encoding": ""
+        }
+
+        response = requests.get(url, headers=headers)
+        return response.text
+    else:
+        return "You haven't login Yet Please Login First"
+
 
 def start(update,context):
     keyboard = [
@@ -128,7 +186,7 @@ def api_Logout(update, context):
         update.message.reply_text("Something Went Wrong")
 # Set up the bot and its message handler
 def main():
-    bot = telegram.Bot("7068360749:AAGtY1VHoI4MxtWLt1OA0fqfjWsMu70ah8M")
+    bot = telegram.Bot("7233518881:AAHQ_NVCds2bH21deSIJPQRnGFQT7CGlHqg")
     updater = telegram.ext.Updater(bot.token, use_context=True)
     disp = updater.dispatcher
     disp.add_handler(telegram.ext.CommandHandler('start',start))
