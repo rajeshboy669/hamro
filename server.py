@@ -62,13 +62,13 @@ def link_gen(uname, long_link):
 
 def start(update,context):
     keyboard = [
-                [InlineKeyboardButton("Sign Up", url="https://xtshort.com/auth/signup")],
+                [InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''😋This bot will help you to Short Links from your XTSHORT.COM Account.
+    message_reply_text = '''😋This bot will help you to Short Links from your ez4short.xyz Account.
 
-If you don't have an active XTSHORT.COM Account then Please register your account here XTSHORT.COM/auth/signup
+If you don't have an active ez4short.xyz Account then Please register your account here ez4short.xyz/auth/signup
  
 2️⃣How to Short Links? 
 👉 After Logging in , Send any link which you want to Short. 
@@ -78,12 +78,12 @@ If you don't have an active XTSHORT.COM Account then Please register your accoun
 👉Send All the links which you want to short in below format 👇
 https://loutube.co
 https://google.com
-https://xtshort.com
+https://ez4short.xyz
 👉 Boom 💥 ! You will get all link shorten.
 
 ⚡️Still Have Doubts?
 ⚡️Want to Report Any Bug?
-😌Send Here @XTshort_support'''
+😌Send Here @EZ4short_support'''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def api_Login(update, context):
@@ -105,7 +105,7 @@ def api_Login(update, context):
 
 def help(update,context):
     keyboard = [
-                [InlineKeyboardButton("Get Help", url="https://XTSHORT.COM/member/forms/support")],
+                [InlineKeyboardButton("Get Help", url="https://ez4short.xyz/member/forms/support")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -113,11 +113,11 @@ def help(update,context):
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
-    update.message.reply_text("""💠 Features Of XTSHORT.COM bot 💠
+    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
 
 ❤️ It's AN AI Based User Friendly Bot ❤️
 
-➡️ Use Can Short Bulk Links Into Your XTSHORT.COM Account With This Bot""")
+➡️ Use Can Short Bulk Links Into Your ez4short.xyz Account With This Bot""")
 
 # Define a function to handle incoming messages
 def handle_message(update, context):
@@ -157,14 +157,14 @@ def handle_message(update, context):
 
 def get_api(update,context):
     keyboard = [
-                [InlineKeyboardButton("Get Token", url="XTSHORT.COM/member/tools/api")],
+                [InlineKeyboardButton("Get Token", url="ez4short.xyz/member/tools/api")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = """• First Visit XTSHORT.COM/member/tools/api
+    message_reply_text = """• First Visit ez4short.xyz/member/tools/api
 • Copy the API TOKEN and come back to Bot.
-• Input  /token and Paste The token Copied from XTSHORT.COM/member/tools/api
-• Now bot will successfully connected to your  XTSHORT.COM account."""
+• Input  /token and Paste The token Copied from ez4short.xyz/member/tools/api
+• Now bot will successfully connected to your  ez4short.xyz account."""
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def api_Logout(update, context):
