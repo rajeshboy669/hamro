@@ -5,7 +5,6 @@ from pymongo.mongo_client import MongoClient
 import requests
 import string
 import random
-from users import *
 def end_gen(length):
     letters = string.ascii_lowercase+string.digits+string.digits
     result_str = ''.join(random.choice(letters) for i in range(length))
