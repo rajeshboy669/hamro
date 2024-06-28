@@ -3,7 +3,7 @@ services:
   - type: web
     name: hamro
     env: python
-    startCommand: python3 main.py
+    startCommand: python3 server.py
     buildCommand: pip3 install -U -r requirements.txt
     repo: https://github.com/aarohaop/hamro # optional
     region: oregon # optional (defaults to oregon)
