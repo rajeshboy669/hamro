@@ -3,6 +3,7 @@ services:
   - type: web
     name: hamro
     env: python
+    PORT = 8080
     startCommand: python3 server.py
     buildCommand: pip3 install -U -r requirements.txt
     repo: https://github.com/aarohaop/hamro # optional
