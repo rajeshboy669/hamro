@@ -11,3 +11,4 @@ services:
     branch: web # optional (defaults to master)
     numInstances: 1 # optional (defaults to 1)
     healthCheckPath: /
+    
