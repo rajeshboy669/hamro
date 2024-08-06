@@ -118,7 +118,7 @@ def feature(update, context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
+    message_reply_text("""💠 Features Of ez4short.xyz bot 💠
 
 ❤️ It's AN AI Based User Friendly Bot ❤️
 
