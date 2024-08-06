@@ -113,12 +113,7 @@ def help(update,context):
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
-    keyboard = [
-                [InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")],
-                
-            ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text("""💠 Features Of ez4short.xyz bot 💠
+    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
 
 ❤️ It's AN AI Based User Friendly Bot ❤️
 
