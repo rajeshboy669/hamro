@@ -127,15 +127,23 @@ Bulk Link Shortening
 - All links will be shortened and returned in one go.
 
 Need Help or Want to Report a Bug?
-- Contact us at EZ4short (https://t.me/ez4short_support).''''
+- Contact us at @EZ4short_support.''''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
-    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
+    update.message.reply_text("""Hello, {username}! 👋
 
-❤️ It's AN AI Based User Friendly Bot ❤️
+🌟 Explore the Features of @ez4short_bot Bot 🌟
 
-➡️ Use Can Short Bulk Links Into Your ez4short.xyz Account With This Bot""")
+🚀 Discover the power of this AI-driven, user-friendly bot. 🤖
+
+✨ With @ez4short_bot Bot, you can easily shorten multiple links simultaneously.
+
+📊 Access your account details and check your balance stats effortlessly.
+
+🖼️ Customize your links with a unique and stylish footer watermark.
+
+❓ If you have any feature requests or questions, don't hesitate to reach out to us at @EZ4short_support""")
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 # Define a function to handle incoming messages
