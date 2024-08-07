@@ -136,10 +136,6 @@ def feature(update, context):
 
 ✨ With @ez4short_bot Bot, you can easily shorten multiple links simultaneously.
 
-📊 Access your account details and check your balance stats effortlessly.
-
-🖼️ Customize your links with a unique and stylish footer watermark.
-
 ❓ If you have any feature requests or questions, don't hesitate to reach out to us at @EZ4short_support""")
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
