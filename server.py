@@ -127,7 +127,7 @@ Bulk Link Shortening
 - All links will be shortened and returned in one go.
 
 Need Help or Want to Report a Bug?
-- Contact us at EZ4short (https://t.me/@ez4short_support).''''
+- Contact us at EZ4short (https://t.me/ez4short_support).''''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
