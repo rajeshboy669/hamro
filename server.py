@@ -124,10 +124,7 @@ Bulk Link Shortening
   - https://google.co
   - https://google.com
   - https://yourlink.com
-- All links will be shortened and returned in one go.
-
-Need Help or Want to Report a Bug?
-- Contact us at @EZ4short_support.''''
+- All links will be shortened and returned in one go'''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
