@@ -66,7 +66,7 @@ def start(update,context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''Hello, (uname)! 👋😃
+    message_reply_text = '''Hello,{username}! 👋😃
 
 🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
 
@@ -128,7 +128,7 @@ Bulk Link Shortening
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
-    update.message.reply_text("""Hello, (uname)! 👋
+    update.message.reply_text("""Hello,{username}! 👋
 
 🌟 Explore the Features of @ez4short_bot Bot 🌟
 
