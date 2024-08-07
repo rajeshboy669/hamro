@@ -66,20 +66,13 @@ def start(update,context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''😋This bot will help you to Short Links from your ez4short.xyz Account.
+    message_reply_text = '''Hello, {username}! 👋😃
 
-If you don't have an active ez4short.xyz Account then Please register your account here ez4short.xyz/auth/signup
- 
-2️⃣How to Short Links? 
-👉 After Logging in , Send any link which you want to Short. 
-👉 You will get your Shortned Link immediately.
+🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
 
-3️⃣How to Short Bulk links at a time? 
-👉Send All the links which you want to short in below format 👇
-https://loutube.co
-https://google.com
-https://ez4short.xyz
-👉 Boom 💥 ! You will get all link shorten.
+Just send me a link, and I'll work my magic to shorten it for you. Plus, I'll keep track of your earnings! 💰💼
+
+Get started now and experience the power of @EZ4short_bot. 💪🔗
 
 ⚡️Still Have Doubts?
 ⚡️Want to Report Any Bug?
@@ -105,11 +98,36 @@ def api_Login(update, context):
 
 def help(update,context):
     keyboard = [
-                [InlineKeyboardButton("Get Help", url="https://ez4short.xyz/member/forms/support")],
+                [InlineKeyboardButton("Get Help", url="https://t.me/ez4short_support")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = 'Click on button to get help'
+    message_reply_text = '''🤖 Welcome to EZ4short Bot!** 🌟
+
+**Getting Started**
+
+**Method 1: API Token Connection**
+1️⃣ Visit the [API Tools Page](https://ez4short.xyz//member/tools/api).
+2️⃣ Copy your API TOKEN.
+3️⃣ Use the command `/login` in this chat, followed by your token.
+4️⃣ The bot will be connected to your EZ4short.xyz account.
+
+No account yet?
+Register easily at https://ez4short.xyz//auth/signup.
+
+Link Shortening Commands
+- Simply send the URL you want to shorten.
+- Receive your shortened link instantly.
+
+Bulk Link Shortening
+- Send multiple URLs in a message like this:
+  - https://google.co
+  - https://google.com
+  - https://yourlink.com
+- All links will be shortened and returned in one go.
+
+Need Help or Want to Report a Bug?
+- Contact us at EZ4short (https://t.me/@ez4short_support).''''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
