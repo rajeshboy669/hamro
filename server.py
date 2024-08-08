@@ -66,7 +66,7 @@ def start(update,context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''Hello user! 👋😃
+    message_reply_text = """<blockquote>Hᴇʟʟᴏ {}👋😃, ᴍʏ ɴᴀᴍᴇ <a href=https://t.me/{}>{}</a></blockquote>
 
 🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
 
@@ -76,7 +76,7 @@ Get started now and experience the power of @EZ4short_bot. 💪🔗
 
 ⚡️Still Have Doubts?
 ⚡️Want to Report Any Bug?
-😌Send Here @EZ4short_support'''
+😌Send Here @EZ4short_support"""
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def api_Login(update, context):
