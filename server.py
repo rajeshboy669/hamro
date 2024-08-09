@@ -66,7 +66,7 @@ def start(update,context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = """(f"Welcome {username}")👋😃
+    message_reply_text = """f"Welcome {username}"👋😃
 
 🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
 
