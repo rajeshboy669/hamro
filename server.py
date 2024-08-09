@@ -12,7 +12,7 @@ def end_gen(length):
 
 
 
-uri = "mongodb+srv://aaroha:aaroha@cluster0.xfupmjy.mongodb.net/?retryWrites=true&w=majority"
+uri = "mongodb+srv://aaroha:aaroha@cluster0.pnzoc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Create a new client and connect to the server
 client = MongoClient(uri)
