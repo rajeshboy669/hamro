@@ -61,13 +61,12 @@ def link_gen(uname, long_link):
 
 
 def start(update,context):
-    username = user.username
     keyboard = [
                 [InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = """Welcome {username}👋😃
+    message_reply_text = """Welcome {user.username}👋😃
 
 🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
 
