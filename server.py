@@ -12,7 +12,7 @@ def end_gen(length):
 
 
 
-uri = "mongodb+srv://nibisha:nibisha@cluster0.6jc4x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri = "mongodb+srv://aaroha:aaroha@cluster0.xfupmjy.mongodb.net/?retryWrites=true&w=majority"
 
 # Create a new client and connect to the server
 client = MongoClient(uri)
@@ -66,17 +66,24 @@ def start(update,context):
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = """Welcome User 👋😃
+    message_reply_text = '''😋This bot will help you to Short Links from your ez4short.xyz Account.
 
-🚀 Welcome to @EZ4short_bot - Your Personal URL Shortener Bot. 🌐
+If you don't have an active ez4short.xyz Account then Please register your account here ez4short.xyz/auth/signup
+ 
+2️⃣How to Short Links? 
+👉 After Logging in , Send any link which you want to Short. 
+👉 You will get your Shortned Link immediately.
 
-Just send me a link, and I'll work my magic to shorten it for you. Plus, I'll keep track of your earnings! 💰💼
-
-Get started now and experience the power of @EZ4short_bot. 💪🔗
+3️⃣How to Short Bulk links at a time? 
+👉Send All the links which you want to short in below format 👇
+https://loutube.co
+https://google.com
+https://ez4short.xyz
+👉 Boom 💥 ! You will get all link shorten.
 
 ⚡️Still Have Doubts?
 ⚡️Want to Report Any Bug?
-😌Send Here @EZ4short_support"""
+😌Send Here @EZ4short_support'''
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def api_Login(update, context):
@@ -98,46 +105,19 @@ def api_Login(update, context):
 
 def help(update,context):
     keyboard = [
-                [InlineKeyboardButton("Get Help", url="https://t.me/ez4short_support")],
+                [InlineKeyboardButton("Get Help", url="https://ez4short.xyz/member/forms/support")],
                 
             ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''🤖 Welcome to EZ4short Bot!** 🌟
-
-**Getting Started**
-
-**Method 1: API Token Connection**
-1️⃣ Visit the [API Tools Page](https://ez4short.xyz//member/tools/api).
-2️⃣ Copy your API TOKEN.
-3️⃣ Use the command `/login` in this chat, followed by your token.
-4️⃣ The bot will be connected to your EZ4short.xyz account.
-
-No account yet?
-Register easily at https://ez4short.xyz//auth/signup.
-
-Link Shortening Commands
-- Simply send the URL you want to shorten.
-- Receive your shortened link instantly.
-
-Bulk Link Shortening
-- Send multiple URLs in a message like this:
-  - https://google.co
-  - https://google.com
-  - https://yourlink.com
-- All links will be shortened and returned in one go'''
+    message_reply_text = 'Click on button to get help'
     update.message.reply_text(message_reply_text, reply_markup=reply_markup)
 
 def feature(update, context):
-    update.message.reply_text("""Hello user! 👋
+    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
 
-🌟 Explore the Features of @ez4short_bot Bot 🌟
+❤️ It's AN AI Based User Friendly Bot ❤️
 
-🚀 Discover the power of this AI-driven, user-friendly bot. 🤖
-
-✨ With @ez4short_bot Bot, you can easily shorten multiple links simultaneously.
-
-❓ If you have any feature requests or questions, don't hesitate to reach out to us at @EZ4short_support""")
-    update.message.reply_text(message_reply_text, reply_markup=reply_markup)
+➡️ Use Can Short Bulk Links Into Your ez4short.xyz Account With This Bot""")
 
 # Define a function to handle incoming messages
 def handle_message(update, context):
@@ -199,7 +179,7 @@ def api_Logout(update, context):
         update.message.reply_text("Something Went Wrong")
 # Set up the bot and its message handler
 def main():
-    bot = telegram.Bot("7286955132:AAE_0lK_I2NWEbWrQDi2-29xEH-yrVWpbgI")
+    bot = telegram.Bot("7163612647:AAFpZ3iSUfv8TZFpKd50-N5RRgN-2z7DWmM")
     updater = telegram.ext.Updater(bot.token, use_context=True)
     disp = updater.dispatcher
     disp.add_handler(telegram.ext.CommandHandler('start',start))
