@@ -87,14 +87,13 @@ app.add_handler(CommandHandler("login", api_login))
 app.add_handler(CommandHandler("logout", api_logout))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-@app.post(f"/{TOKEN}")
-async def handle_post():
-    # Your logic here
+@app.route(f"/{TOKEN}", methods=["POST"])
+def handle_webhook():
     data = request.get_json()
-    update = Update.de_json(data, app.bot)
-    await app.process_update(update)
+    update = Update.de_json(data, bot_app.bot)
+    bot_app.process_update(update)
     return "OK", 200
-
+    
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
