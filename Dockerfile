@@ -13,8 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expose the port the app runs on (Render or any cloud platform uses this to bind)
 EXPOSE 5000
 
-# Define environment variables
-ENV PORT=5000
-
-# Run the application
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "5000"]
+# Run gunicorn to serve the Flask app
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "server:app"]
