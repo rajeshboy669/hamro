@@ -1,13 +1,18 @@
-FROM python:3.8
+# Use an official Python runtime as a parent image
+FROM python:3.11
 
-COPY requirements.txt .
+# Set the working directory in the container
+WORKDIR /app
 
-RUN pip install -r requirements.txt
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-COPY . .
+# Install required Python packages
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 1337
+# Expose the port Flask will run on
+EXPOSE 5000
 
-USER 1000
+# Run the bot with Uvicorn
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "5000"]
 
-CMD [ "python", "./server.py" ]
