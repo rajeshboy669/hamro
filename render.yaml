@@ -1,12 +1,18 @@
 services:
-  services:
   - type: web
     name: telegram-bot
     env: python
-    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
-    buildCommand: pip install -U -r requirements.txt
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python server.py"
     envVars:
-      - key: BOT_TOKEN
-        sync: false
-      - key: MONGO_URI
-        sync: false
+      - key: TELEGRAM_API_KEY
+        value: your-telegram-api-key
+      - key: DATABASE_URL
+        value: your-database-url
+    regions:
+      - oregon
+    # Uncomment below if you need to set a specific GitHub repository
+    # git:
+    #   repo: https://github.com/yourusername/your-repo
+    #   branch: main
