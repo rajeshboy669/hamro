@@ -87,8 +87,9 @@ app.add_handler(CommandHandler("login", api_login))
 app.add_handler(CommandHandler("logout", api_logout))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-@app.route(f"/{TOKEN}", methods=["POST"])
-async def webhook():
+@app.post(f"/{TOKEN}")
+async def handle_post():
+    # Your logic here
     data = request.get_json()
     update = Update.de_json(data, app.bot)
     await app.process_update(update)
