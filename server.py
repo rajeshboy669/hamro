@@ -1,14 +1,10 @@
 import os
-import asyncio
 import logging
-import requests
-import re
-import string
-import random
 from flask import Flask, request
 from pymongo import MongoClient
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
+import requests
 
 # Load Bot Token and MongoDB URI from Environment Variables
 TOKEN = os.getenv("BOT_TOKEN", "7754090875:AAFvORs24VyZojKEqoNoX4nD6kfYZOlzbW8")
@@ -21,6 +17,9 @@ app = Flask(__name__)
 client = MongoClient(MONGO_URI)
 db = client['TeleUsers']
 collection = db['TeleAuth']
+
+# Create a telegram bot application
+bot_app = Application.builder().token(TOKEN).build()
 
 def is_auth(uname):
     return collection.find_one({"_id": uname})
@@ -47,6 +46,7 @@ def link_gen(uname, long_link):
         return response.text
     return "You haven't logged in yet. Please login first."
 
+# Handlers for Telegram Bot
 async def start(update: Update, context: CallbackContext):
     keyboard = [[InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -81,19 +81,19 @@ async def handle_message(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("Send a valid link to shorten.")
 
-app = Application.builder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("login", api_login))
-app.add_handler(CommandHandler("logout", api_logout))
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+bot_app.add_handler(CommandHandler("start", start))
+bot_app.add_handler(CommandHandler("login", api_login))
+bot_app.add_handler(CommandHandler("logout", api_logout))
+bot_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
+# Flask route for Telegram webhook
 @app.route(f"/{TOKEN}", methods=["POST"])
-def handle_webhook():
+def webhook():
     data = request.get_json()
     update = Update.de_json(data, bot_app.bot)
     bot_app.process_update(update)
     return "OK", 200
-    
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
