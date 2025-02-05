@@ -1,195 +1,99 @@
-import telegram.ext
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-import re
-from pymongo.mongo_client import MongoClient
+import os
+import asyncio
+import logging
 import requests
+import re
 import string
 import random
-def end_gen(length):
-    letters = string.ascii_lowercase+string.digits+string.digits
-    result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str
+from flask import Flask, request
+from pymongo import MongoClient
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 
+# Load Bot Token and MongoDB URI from Environment Variables
+TOKEN = os.getenv("BOT_TOKEN", "7754090875:AAFvORs24VyZojKEqoNoX4nD6kfYZOlzbW8")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://aaroha:aaroha@<hostname>/?ssl=true&replicaSet=atlas-dut4lu-shard-0&authSource=admin&retryWrites=true&w=majority")
 
+# Setup Flask App
+app = Flask(__name__)
 
-uri = "mongodb+srv://aaroha:aaroha@cluster0.xfupmjy.mongodb.net/?retryWrites=true&w=majority"
-
-# Create a new client and connect to the server
-client = MongoClient(uri)
+# Connect to MongoDB
+client = MongoClient(MONGO_URI)
 db = client['TeleUsers']
 collection = db['TeleAuth']
-# user login
 
 def is_auth(uname):
-    query = {"_id": uname}
-    result = collection.find_one(query)
-    return result
+    return collection.find_one({"_id": uname})
 
 def login(uname, api_key):
-    d_check=is_auth(uname)
-    if d_check == None:
-        document = {'_id': uname,'api_key': api_key}
-        collection.insert_one(document)
+    if is_auth(uname) is None:
+        collection.insert_one({'_id': uname, 'api_key': api_key})
         return True
-    else:
-        return False
-    
+    return False
+
 def logout(uname):
-    query={'_id': uname}
-    result = collection.find_one(query)
-    if result != None:
-        collection.delete_one(query)
+    result = collection.find_one({"_id": uname})
+    if result:
+        collection.delete_one({"_id": uname})
         return True
-    else:
-        return False
+    return False
 
-# link generator 
 def link_gen(uname, long_link):
-    if is_auth(uname) != None:
-        query={"_id":uname}
-        res=collection.find_one(query)
-        api_key=res['api_key']
-        url=f"https://ez4short.xyz/api?api={api_key}&url={long_link}&format=text"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-            "Accept": "application/json"
-        }
-
-        response = requests.get(url, headers=headers)
+    user_data = is_auth(uname)
+    if user_data:
+        api_key = user_data['api_key']
+        url = f"https://ez4short.xyz/api?api={api_key}&url={long_link}&format=text"
+        response = requests.get(url)
         return response.text
-    else:
-        return "You haven't login Yet Please Login First"
+    return "You haven't logged in yet. Please login first."
 
-
-def start(update,context):
-    keyboard = [
-                [InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")],
-                
-            ]
+async def start(update: Update, context: CallbackContext):
+    keyboard = [[InlineKeyboardButton("Sign Up", url="https://ez4short.xyz/auth/signup")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = '''😋This bot will help you to Short Links from your ez4short.xyz Account.
+    message = "😋 This bot helps you shorten links using your ez4short.xyz account. Register here: https://ez4short.xyz/auth/signup"
+    await update.message.reply_text(message, reply_markup=reply_markup)
 
-If you don't have an active ez4short.xyz Account then Please register your account here ez4short.xyz/auth/signup
- 
-2️⃣How to Short Links? 
-👉 After Logging in , Send any link which you want to Short. 
-👉 You will get your Shortned Link immediately.
-
-3️⃣How to Short Bulk links at a time? 
-👉Send All the links which you want to short in below format 👇
-https://loutube.co
-https://google.com
-https://ez4short.xyz
-👉 Boom 💥 ! You will get all link shorten.
-
-⚡️Still Have Doubts?
-⚡️Want to Report Any Bug?
-😌Send Here @EZ4short_support'''
-    update.message.reply_text(message_reply_text, reply_markup=reply_markup)
-
-def api_Login(update, context):
-    user_rsp=update.message.text.split(" ")
-    user = update.message.from_user
-    username = user.username
-    if len(user_rsp)==1:
-        update.message.reply_text("Please send login api in format of /login 12590xxxxxxxx")
-    elif len(user_rsp)==2:
-        ser_rsp=login(username, user_rsp[1])
-        if ser_rsp == True:
-            update.message.reply_text(f"Welcome {username}, Now You Can Short Your Links")
-        elif ser_rsp == False:
-            update.message.reply_text("You are already logged in.")
+async def api_login(update: Update, context: CallbackContext):
+    user_rsp = update.message.text.split(" ")
+    username = update.message.from_user.username
+    if len(user_rsp) == 2:
+        if login(username, user_rsp[1]):
+            await update.message.reply_text(f"Welcome {username}, you can now shorten links!")
         else:
-            update.message.reply_text("Something Went Wrong")
+            await update.message.reply_text("You are already logged in.")
     else:
-        update.message.reply_text("Please send api in format /login 12590xxxxxxxx")
+        await update.message.reply_text("Use format: /login YOUR_API_KEY")
 
-def help(update,context):
-    keyboard = [
-                [InlineKeyboardButton("Get Help", url="https://ez4short.xyz/member/forms/support")],
-                
-            ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = 'Click on button to get help'
-    update.message.reply_text(message_reply_text, reply_markup=reply_markup)
-
-def feature(update, context):
-    update.message.reply_text("""💠 Features Of ez4short.xyz bot 💠
-
-❤️ It's AN AI Based User Friendly Bot ❤️
-
-➡️ Use Can Short Bulk Links Into Your ez4short.xyz Account With This Bot""")
-
-# Define a function to handle incoming messages
-def handle_message(update, context):
-    message = update.message
-    r_message=message.text
-    user = update.message.from_user
-    username = user.username
-    if message.photo:
-        # Get the latest photo and its caption
-        photo_file_id = message.photo[-1].file_id
-        caption = message.caption
-        links = re.findall(r'(https?://\S+)', caption)
-        filtered_list = [link for link in links if "t.me" not in link]
-        short_link=[]
-        L=0
-        for link in filtered_list:
-            short_link.append(link_gen(username, link))
-            caption = caption.replace(link, f"{short_link[L]}")
-            L=L+1
-        context.bot.send_photo(chat_id=message.chat_id, photo=photo_file_id, caption=caption)
-    elif message.text:
-        if "https//" in message.text or "http" in message.text:
-            caption = message.text
-            links = re.findall(r'(https?://\S+)', caption)
-            filtered_list = [link for link in links if "t.me" not in link]
-            short_link=[]
-            L=0
-            for link in filtered_list:
-                short_link.append(link_gen(username, link))
-                caption = caption.replace(link, f"{short_link[L]} ")
-                L=L+1
-            update.message.reply_text(caption)
-        else:
-            update.message.reply_text("Please Send me any link or Forward Whole Post")
+async def api_logout(update: Update, context: CallbackContext):
+    username = update.message.from_user.username
+    if logout(username):
+        await update.message.reply_text("Successfully logged out.")
     else:
-        update.message.reply_text("Please Send me any link or Forward Whole Post")
+        await update.message.reply_text("You haven't logged in yet.")
 
-def get_api(update,context):
-    keyboard = [
-                [InlineKeyboardButton("Get Token", url="ez4short.xyz/member/tools/api")],
-                
-            ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    message_reply_text = """• First Visit ez4short.xyz/member/tools/api
-• Copy the API TOKEN and come back to Bot.
-• Input  /token and Paste The token Copied from ez4short.xyz/member/tools/api
-• Now bot will successfully connected to your  ez4short.xyz account."""
-    update.message.reply_text(message_reply_text, reply_markup=reply_markup)
-
-def api_Logout(update, context):
-    user = update.message.from_user
-    username = user.username
-    resp=logout(username)
-    if resp == True:
-        update.message.reply_text("You are Logged Out SuccessFully")
-    elif resp == False:
-        update.message.reply_text("You Haven't Login Yet Please Login First")
+async def handle_message(update: Update, context: CallbackContext):
+    message = update.message.text
+    username = update.message.from_user.username
+    links = re.findall(r'(https?://\S+)', message)
+    short_links = [link_gen(username, link) for link in links]
+    if short_links:
+        await update.message.reply_text("\n".join(short_links))
     else:
-        update.message.reply_text("Something Went Wrong")
-# Set up the bot and its message handler
-def main():
-    bot = telegram.Bot("6700816220:AAFVkiq6sG9H6I-ZO40pdRavvjQx0BN6hMQ")
-    updater = telegram.ext.Updater(bot.token, use_context=True)
-    disp = updater.dispatcher
-    disp.add_handler(telegram.ext.CommandHandler('start',start))
-    disp.add_handler(telegram.ext.CommandHandler('help',help))
-    disp.add_handler(telegram.ext.CommandHandler('login',api_Login))
-    disp.add_handler(telegram.ext.CommandHandler('get_api',get_api))
-    disp.add_handler(telegram.ext.CommandHandler('logout',api_Logout))
-    disp.add_handler(telegram.ext.CommandHandler('features',feature))
-    disp.add_handler(telegram.ext.MessageHandler(telegram.ext.Filters.all, handle_message))
-    updater.start_polling()
+        await update.message.reply_text("Send a valid link to shorten.")
+
+app = Application.builder().token(TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("login", api_login))
+app.add_handler(CommandHandler("logout", api_logout))
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+@app.route(f"/{TOKEN}", methods=["POST"])
+async def webhook():
+    data = request.get_json()
+    update = Update.de_json(data, app.bot)
+    await app.process_update(update)
+    return "OK", 200
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
