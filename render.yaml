@@ -1,14 +1,12 @@
 services:
-  # A Docker web service
+  services:
   - type: web
-    name: hamro
+    name: telegram-bot
     env: python
-    startCommand: python3 server.py
-    buildCommand: pip3 install -U -r requirements.txt
-    repo: https://github.com/aarohaop/hamro # optional
-    region: oregon # optional (defaults to oregon)
-    plan: free # optional (defaults to starter)
-    branch: web # optional (defaults to master)
-    numInstances: 1 # optional (defaults to 1)
-    healthCheckPath: /
-    
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -U -r requirements.txt
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: MONGO_URI
+        sync: false
